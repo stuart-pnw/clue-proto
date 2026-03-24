@@ -625,6 +625,12 @@ export default function ClueApp() {
           if (user?.onboarding_complete) {
             setFeed(buildFeed());
             setScreen('daily');
+          } else {
+            // Authenticated but onboarding not done - they just returned from OAuth
+            // (step 6 = create account). Advance past it to step 7 (connect X).
+            const savedStep = parseInt(localStorage.getItem('clue_nux_step') || '7', 10);
+            localStorage.removeItem('clue_nux_step');
+            setStep(savedStep);
           }
         }
 
@@ -984,14 +990,14 @@ export default function ClueApp() {
         <div style={s.authOptions}>
           <button
             style={{...s.authBtn, background: '#fff', border: '1px solid #ddd'}}
-            onClick={() => { setAuthMethod('google'); window.location.href = `${API_URL}/auth/google`; }}
+            onClick={() => { setAuthMethod('google'); localStorage.setItem('clue_nux_step', '7'); window.location.href = `${API_URL}/auth/google`; }}
           >
             <span style={s.authIcon}>G</span>
             <span>Continue with Google</span>
           </button>
           <button
             style={{...s.authBtn, background: '#000', color: '#fff'}}
-            onClick={() => { setAuthMethod('x'); window.location.href = `${API_URL}/auth/x`; }}
+            onClick={() => { setAuthMethod('x'); localStorage.setItem('clue_nux_step', '7'); window.location.href = `${API_URL}/auth/x`; }}
           >
             <span style={s.authIcon}>𝕏</span>
             <span>Continue with X</span>
@@ -999,7 +1005,7 @@ export default function ClueApp() {
           <div style={s.authDivider}><span>or</span></div>
           <button
             style={{...s.authBtn, background: '#0077B5', color: '#fff'}}
-            onClick={() => { setAuthMethod('linkedin'); window.location.href = `${API_URL}/auth/linkedin`; }}
+            onClick={() => { setAuthMethod('linkedin'); localStorage.setItem('clue_nux_step', '7'); window.location.href = `${API_URL}/auth/linkedin`; }}
           >
             <span style={s.authIcon}>in</span>
             <span>Continue with LinkedIn</span>
