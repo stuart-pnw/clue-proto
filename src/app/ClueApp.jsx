@@ -1051,6 +1051,7 @@ export default function ClueApp() {
           style={s.btnDark}
           onClick={() => {
             // Redirect to X OAuth — backend will redirect back after connecting
+            localStorage.setItem('clue_nux_step', '8');
             window.location.href = `${API_URL}/auth/x`;
           }}
         >
